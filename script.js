@@ -141,7 +141,6 @@ async function checkWord(word) {
       }
       currentLine++;
       currentWord = '';
-      hi.value = '';
     }
     if (currentLine == 6) {
       ww.textContent = wordleWord.word;

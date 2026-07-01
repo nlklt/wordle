@@ -56,6 +56,11 @@ h1 {
   }
 }
 
+input {
+  position: absolute;
+  opacity: 0;
+}
+
 .focus-cell {
   animation: migmig 0.9s infinite ease-in-out;
 }

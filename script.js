@@ -9,7 +9,12 @@ let wordleWord;
 let validWord;
 let currentLine = 0;
 
+
 const table = document.querySelector('.main');
+const hi = document.createElement('input'); // Исправлено тут
+table.appendChild(hi);
+hi.focus();
+
 this.addEventListener('keydown', (e) => {
   if (isLetter(e.key)) {
     console.log(e.key);
@@ -23,13 +28,13 @@ this.addEventListener('keydown', (e) => {
     for (let i = 0; i < line.length; i++) {
       line[i].parentElement.classList.remove('nope')
     }
-
+    
     currentWord.length >= 0 ?
-      line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
-      : null;
+    line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
+    : null;
     currentWord.length <= LETTERS ?
-      line[(currentWord.length)].parentElement.classList.add('focus-cell')
-      : null;
+    line[(currentWord.length)].parentElement.classList.add('focus-cell')
+    : null;
   }
 });
 

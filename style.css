@@ -73,11 +73,11 @@ p {
   font-family: monospace;
 }
 
-.miss {
+.cell.miss {
   background-color: #BFB48F;
 }
 
-.empty {
+.cell.empty {
   background-color: #564E58;
 }
 
@@ -85,6 +85,6 @@ p {
   background-color: #904E55;
 }
 
-.correct {
+.cell.correct {
   background-color: #81f887;
 }

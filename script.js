@@ -15,6 +15,7 @@ const ww = document.querySelector('.wordle');
 const hi = document.createElement('input');
 table.appendChild(hi);
 hi.focus();
+hi.maxLength = 5;
 
 hi.addEventListener('input', (e) => {
   // if ((hi.value)) {
@@ -83,7 +84,7 @@ function getTable() {
 }
 
 function typeLetter(letters) {
-  console.log(currentLine);
+  console.log(letters);
   console.log(currentWord);
   const line = document.querySelectorAll(`.line-${currentLine}`);
   if (currentWord.length < LETTERS) {
@@ -139,7 +140,6 @@ async function checkWord(word) {
         line[i].parentElement.classList.add('nope');
         console.log('nope')
       }
-      currentLine++;
       currentWord = '';
     }
     if (currentLine == 6) {

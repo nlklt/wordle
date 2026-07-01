@@ -58,6 +58,8 @@ h1 {
 
 input {
   position: absolute;
+  width: 50%;
+  height: 50%;
   opacity: 0;
 }
 

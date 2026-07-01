@@ -11,6 +11,7 @@ let currentLine = 0;
 
 
 const table = document.querySelector('.main');
+const ww = document.querySelector('.wordle');
 const hi = document.createElement('input');
 table.appendChild(hi);
 hi.focus();
@@ -141,6 +142,9 @@ async function checkWord(word) {
       currentLine++;
       currentWord = '';
       hi.value = '';
+    }
+    if (currentLine == 6) {
+      ww.textContent = wordleWord.word;
     }
   }
 }

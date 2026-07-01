@@ -11,31 +11,31 @@ let currentLine = 0;
 
 
 const table = document.querySelector('.main');
-const hi = document.createElement('input'); // Исправлено тут
+const hi = document.createElement('input');
 table.appendChild(hi);
 hi.focus();
 
-this.addEventListener('keydown', (e) => {
-  if (isLetter(e.key)) {
-    console.log(e.key);
-    typeLetter(e.key.toUpperCase());
-  }
-  else if (e.key === 'Backspace') {
-    console.log(currentWord);
-    currentWord = currentWord.slice(0, -1);
-    const line = document.querySelectorAll(`.line-${currentLine}`);
-    line[currentWord.length].textContent = '';
-    for (let i = 0; i < line.length; i++) {
-      line[i].parentElement.classList.remove('nope')
-    }
+hi.addEventListener('input', (e) => {
+  // if ((hi.value)) {
+    console.log(hi.value);
+    typeLetter(hi.value.toUpperCase());
+  // }
+  // else if (e.key === 'Backspace') {
+  //   console.log(currentWord);
+  //   currentWord = currentWord.slice(0, -1);
+  //   const line = document.querySelectorAll(`.line-${currentLine}`);
+  //   line[currentWord.length].textContent = '';
+  //   for (let i = 0; i < line.length; i++) {
+  //     line[i].parentElement.classList.remove('nope')
+  //   }
     
-    currentWord.length >= 0 ?
-    line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
-    : null;
-    currentWord.length <= LETTERS ?
-    line[(currentWord.length)].parentElement.classList.add('focus-cell')
-    : null;
-  }
+  //   currentWord.length >= 0 ?
+  //   line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
+  //   : null;
+  //   currentWord.length <= LETTERS ?
+  //   line[(currentWord.length)].parentElement.classList.add('focus-cell')
+  //   : null;
+  // }
 });
 
 table.appendChild(getTable());
@@ -81,12 +81,12 @@ function getTable() {
   return table;
 }
 
-function typeLetter(letter) {
+function typeLetter(letters) {
   console.log(currentLine);
   console.log(currentWord);
   const line = document.querySelectorAll(`.line-${currentLine}`);
   if (currentWord.length < LETTERS) {
-    currentWord += letter;
+    currentWord = letters;
     for (let i = 0; i < currentWord.length; i++) {
       line[i].textContent = currentWord[i];
     }
@@ -130,6 +130,7 @@ async function checkWord(word) {
       }
       currentWord = '';
       currentLine++;
+      hi.value = '';
     }
     else {
       const line = document.querySelectorAll(`.line-${currentLine}`);
@@ -137,6 +138,9 @@ async function checkWord(word) {
         line[i].parentElement.classList.add('nope');
         console.log('nope')
       }
+      currentLine++;
+      currentWord = '';
+      hi.value = '';
     }
   }
 }

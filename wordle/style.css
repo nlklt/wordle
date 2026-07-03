@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  color: F2EFE9 
+  color: #F2EFE9;
 }
 
 body {
@@ -16,15 +16,11 @@ h1 {
   font-family: 'Courier New', Courier, monospace;
 }
 
-.main {
+.table {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-}
-
-.table {
-  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -52,7 +48,7 @@ h1 {
   50% {
     transform: scale(1.06);
   }
-  10% {
+  100% {
     transform: scale(1);
   }
 }
@@ -60,7 +56,8 @@ h1 {
 input {
   position: absolute;
   height: 100%;
-  opacity: 0;
+  width: 100%;
+  opacity: 0.1;
 }
 
 .focus-cell {
@@ -73,6 +70,10 @@ p {
   font-family: monospace;
 }
 
+.cell.correct {
+  background-color: #81f887;
+}
+
 .cell.miss {
   background-color: #BFB48F;
 }
@@ -83,8 +84,4 @@ p {
 
 .nope {
   background-color: #904E55;
-}
-
-.cell.correct {
-  background-color: #81f887;
 }

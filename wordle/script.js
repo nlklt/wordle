@@ -10,56 +10,35 @@ let validWord;
 let currentLine = 0;
 
 
-const table = document.querySelector('.main');
-const ww = document.querySelector('.wordle');
-const hi = document.createElement('input');
-table.appendChild(hi);
-hi.focus();
-hi.maxLength = 5;
+const main = document.querySelector('.main');
+const wordle = document.querySelector('.wordle');
 
-hi.addEventListener('input', (e) => {
-  // if ((hi.value)) {
-    console.log(hi.value);
-    typeLetter(hi.value.toUpperCase());
-  // }
-  // else if (e.key === 'Backspace') {
-  //   console.log(currentWord);
-  //   currentWord = currentWord.slice(0, -1);
-  //   const line = document.querySelectorAll(`.line-${currentLine}`);
-  //   line[currentWord.length].textContent = '';
-  //   for (let i = 0; i < line.length; i++) {
-  //     line[i].parentElement.classList.remove('nope')
-  //   }
-    
-  //   currentWord.length >= 0 ?
-  //   line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
-  //   : null;
-  //   currentWord.length <= LETTERS ?
-  //   line[(currentWord.length)].parentElement.classList.add('focus-cell')
-  //   : null;
-  // }
+main.appendChild(getTable());
+
+const hideInput = document.createElement('input');
+hideInput.addEventListener('input', (e) => {
+  hideInput.value = hideInput.value.replace(/\W|\d|_/g, '');
+  writeWord(hideInput.value);
+  const line = document.querySelectorAll(`.line-${currentLine}`);
+  for (let i = 0; i < LETTERS; i++) {
+    line[i].parentElement.classList.remove('nope');
+  }
 });
+hideInput.addEventListener('click', (e) => {
+  wordle.textContent = 'Wordle! type words';
+  main.firstChild.firstChild.firstChild.classList.add('focus-cell');
+});
+hideInput.name = 'word';
+hideInput.maxLength = 5;
+main.appendChild(hideInput);
 
-table.appendChild(getTable());
+
 getNewWord();
 
 async function getNewWord() {
   const promise = (await fetch(GET_RANDOM_WORD));
   wordleWord = await promise.json();
-  console.log(wordleWord)
-}
-
-async function validateCurrentWord() {
-  const promise = (await fetch(POST_WORD_URL, {
-    method: 'POST',
-    body: JSON.stringify({ 'word': currentWord.toString() })
-  }));
-  validWord = await promise.json();
-  console.log(validWord)
-}
-
-function isLetter(symbol) {
-  return /^[A-Za-z]$/.test(symbol);
+  console.log(`wordleWord: ${wordleWord.word}`)
 }
 
 function getTable() {
@@ -70,7 +49,6 @@ function getTable() {
     line.classList.add('line');
     for (let j = 0; j < LETTERS; j++) {
       const cell = document.createElement('div');
-      i == 0 && j == 0 ? cell.classList.add('focus-cell') : null;
       cell.classList.add('cell');
       const letter = document.createElement('p');
       letter.classList.add(`line-${i}`);
@@ -83,32 +61,37 @@ function getTable() {
   return table;
 }
 
-function typeLetter(letters) {
-  console.log(letters);
-  console.log(currentWord);
+function writeWord(word) {
   const line = document.querySelectorAll(`.line-${currentLine}`);
-  if (currentWord.length < LETTERS) {
-    currentWord = letters;
-    for (let i = 0; i < currentWord.length; i++) {
-      line[i].textContent = currentWord[i];
+  currentWord = word;
+  for (let i = 0; i < LETTERS; i++) {
+    if (currentWord.length > i) {
+      line[i].textContent = currentWord[i].toLocaleUpperCase();
     }
-    if (currentWord.length === LETTERS) {
-      checkWord(currentWord);
+    else {
+      line[i].textContent = '';
     }
   }
+
   currentWord.length > 0 ?
     line[currentWord.length - 1].parentElement.classList.remove('focus-cell')
     : null;
+  currentWord.length < LETTERS - 1 ?
+    line[currentWord.length + 1].parentElement.classList.remove('focus-cell')
+    : null
   currentWord.length < LETTERS ?
     line[(currentWord.length)].parentElement.classList.add('focus-cell')
     : null;
 
-  console.log(currentWord);
+    
+  if (currentWord.length == LETTERS) {
+    checkWord(currentWord);
+  }
 }
 
 async function checkWord(word) {
-  if (word === wordleWord.word.toUpperCase()) {
-    console.log('YES');
+  if (word === wordleWord.word) {
+    wordle.textContent = 'You WIN))'
     const line = document.querySelectorAll(`.line-${currentLine}`);
     for (let i = 0; i < line.length; i++) {
       line[i].parentElement.classList.add('correct');
@@ -116,34 +99,46 @@ async function checkWord(word) {
   }
   else {
     await validateCurrentWord();
-    console.log(validWord.validWord);
     if (validWord.validWord) {
       const line = document.querySelectorAll(`.line-${currentLine}`);
       for (let i = 0; i < line.length; i++) {
         if (line[i].textContent.toLowerCase() === wordleWord.word[i]) {
-          console.log(line[i].textContent, wordleWord.word.toUpperCase())
           line[i].parentElement.classList.add('correct');
         }
         if (wordleWord.word.includes(line[i].textContent.toLocaleLowerCase()))
           line[i].parentElement.classList.add('miss');
         else
           line[i].parentElement.classList.add('empty');
-
+        
       }
-      currentWord = '';
       currentLine++;
-      hi.value = '';
+      currentWord = '';
+      hideInput.value = '';
+      
+      currentLine < LINES 
+        ? () => {
+          const nextLine = document.querySelectorAll(`.line-${currentLine}`)
+          nextLine[0].parentElement.classList.add('focus-cell');
+        }
+        : null;
     }
     else {
       const line = document.querySelectorAll(`.line-${currentLine}`);
       for (let i = 0; i < line.length; i++) {
         line[i].parentElement.classList.add('nope');
-        console.log('nope')
       }
       currentWord = '';
     }
     if (currentLine == 6) {
-      ww.textContent = wordleWord.word;
+      wordle.textContent = `Word is "${wordleWord.word}"((`;
     }
   }
+}
+
+async function validateCurrentWord() {
+  const promise = (await fetch(POST_WORD_URL, {
+    method: 'POST',
+    body: JSON.stringify({ 'word': currentWord.toString() })
+  }));
+  validWord = await promise.json();
 }

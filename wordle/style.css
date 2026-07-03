@@ -20,6 +20,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .table {
@@ -58,9 +59,8 @@ h1 {
 
 input {
   position: absolute;
-  width: 50%;
-  height: 50%;
-  opacity: 0;
+  height: 100%;
+  opacity: 0.5;
 }
 
 .focus-cell {
@@ -78,7 +78,7 @@ p {
 }
 
 .cell.empty {
-  background-color: #564E58;
+  background-color: #494949;
 }
 
 .nope {

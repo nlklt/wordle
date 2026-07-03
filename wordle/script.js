@@ -18,7 +18,7 @@ main.appendChild(getTable());
 const hideInput = document.createElement('input');
 hideInput.addEventListener('input', (e) => {
   hideInput.value = hideInput.value.replace(/\W|\d|_/g, '');
-  writeWord(hideInput.value);
+  writeWord(hideInput.value);м
   const line = document.querySelectorAll(`.line-${currentLine}`);
   for (let i = 0; i < LETTERS; i++) {
     line[i].parentElement.classList.remove('nope');
